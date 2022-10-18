@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Suzubox</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+	      rel="stylesheet"
+	      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+	      crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">Catbox v2</a>
+	</div>
+</nav>
+<div class="container">
+	<hr />
+	<h2>Upload</h2>
+	{{message|safe}}
+	<form method="post" enctype="multipart/form-data" class="row">
+		<div class="col-auto">
+			<input type="file" name="form-file-input" id="form-file-input" class="form-control form-control" />
+		</div>
+		<div class="col-auto">
+			<input type="submit" class="btn btn-primary" value="Upload" />
+		</div>
+	</form>
+	<hr />
+	<h2>Browse</h2>
+	<table id="files" class="table table-striped table-hover">
+		<thead><tr><th>Filename</th><th>Modified at (Server Time)</th><th>Size</th></tr></thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<script>
+	const catbox = JSON.parse('{{file_list|safe}}').catbox;
+	const n_files = catbox.length;
+	let list = document.getElementById("files").children[1];
+	for (let i = 0; i < n_files; ++i) {
+		let tr = document.createElement('tr');
+		let f = document.createElement('td'); let ff = document.createElement('a');
+		ff.innerText = catbox[i].f; ff.href = 'box/' + catbox[i].f;
+		f.appendChild(ff); tr.appendChild(f);
+		let m = document.createElement('td'); m.innerText = catbox[i].m; tr.appendChild(m);
+		let s = document.createElement('td'); s.innerText = catbox[i].s; tr.appendChild(s);
+		list.appendChild(tr);
+	}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>
